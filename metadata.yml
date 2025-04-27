@@ -1,0 +1,18 @@
+title: "My Presentation Title"
+author:
+  - "Alice Smith\\textsuperscript{1,2}"
+  - "Bob Jones\\textsuperscript{1}"
+  - "Charlie Brown\\textsuperscript{2}"
+shortauthor: "A. Smith et al."
+institute:
+  - "\\textsuperscript{1}University of Examples"
+  - "\\textsuperscript{2}Another Institute"
+shortinstitute: "Univ. Ex. & Inst. 2"
+event: "Example Conference 2025"
+logos:
+  - "logos/Huberlin.svg.png"
+  - "logos/logo.png"
+date: "April 23, 2025"
+email: "alice.smith@example.com"
+theme: "Boadilla"
+aspectratio: 1610

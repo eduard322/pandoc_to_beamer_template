@@ -1,0 +1,133 @@
+% pandoc-beamer-template.tex
+$if(beamer)$
+\documentclass[aspectratio=1610]{beamer}
+$else$
+\documentclass{article}
+$endif$
+
+% Theme (override via --metadata=theme:…)
+$if(theme)$
+\usetheme{$theme$}
+$else$
+\usetheme{default}
+$endif$
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+  \lstset{basicstyle=\ttfamily\small,breaklines=true}
+\usepackage{ifthen}
+
+% Make Pandoc’s tightlist safe
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}%
+  \setlength{\parskip}{0pt}%
+}
+
+
+% Stub out Pandoc’s passthrough macro (e.g. inline math, backslashes, etc.)
+\providecommand{\passthrough}[1]{#1}
+
+% Support for Pandoc’s bounded divs
+\makeatletter
+\newenvironment{pandocdiv}[1]{%
+  \begin{center}\begin{minipage}{#1}%
+}{%
+  \end{minipage}\end{center}%
+}
+\providecommand{\pandocbounded}[2][]{%
+  \ifthenelse{\equal{#1}{}}{#2}{\begin{pandocdiv}{#1}#2\end{pandocdiv}}%
+}
+\makeatother
+
+% Pull in author email if provided
+$if(email)$
+\newcommand{\authoremail}{$email$}
+$else$
+\newcommand{\authoremail}{}
+$endif$
+
+% Email macro
+$if(email)$
+\newcommand{\insertemail}{\small{\texttt{\color{blue}{$email$}}}}
+$else$
+\newcommand{\insertemail}{}
+$endif$
+
+
+% Hook for any extra header-includes
+$if(header-includes)$
+$for(header-includes)$
+$header-includes$
+$endfor$
+$endif$
+
+% Metadata fields
+\title{$title$}
+
+$if(author)$
+\author[$shortauthor$]{$for(author)$$author$$sep$, $endfor$}
+$endif$
+$if(institute)$
+\institute[$shortinstitute$]{$for(institute)$$institute$$sep$\\$endfor$\\$insertemail$}
+$endif$
+$if(event)$
+\subtitle{$event$}
+$endif$
+$if(logos)$
+% logos list is handled in title page
+$endif$
+$if(date)$
+\date{$date$}
+$endif$
+
+% Title slide template (plain: no footer)
+\setbeamertemplate{title page}{%
+  \begin{centering}
+    \vspace*{1.5cm}
+    {\usebeamerfont{title}\inserttitle\par}
+    \vspace*{1cm}
+    {\usebeamerfont{author}\insertauthor\par}
+    \vspace*{0.5cm}
+    {\usebeamerfont{institute}\insertinstitute\par}
+    $if(email)$
+    \vspace*{0.25cm}
+    {\insertemail\par}
+    $endif$
+    $if(event)$
+    \vspace*{0.5cm}
+    {\usebeamerfont{subtitle}\insertsubtitle\par}
+    $endif$
+    $if(logos)$
+    \vspace*{0.25cm}
+    \begin{center}
+    $for(logos)$
+      \includegraphics[height=2.0cm]{$logos$}\hspace{0.5cm}
+    $endfor$
+    \end{center}
+    $endif$
+    {\usebeamerfont{date}\insertdate\par}
+  \end{centering}
+}
+
+% Auto TOC per section (optional)
+$if(toc)$
+\AtBeginSection[]{\frame{\sectionpage}}
+$endif$
+
+\begin{document}
+
+% Title frame (plain = suppress footline)
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% Main content
+$body$
+
+\end{document}
